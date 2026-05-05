@@ -11,17 +11,17 @@ public sealed class GitHubDashboardProvider : IPipelineDashboardProvider
 {
     private readonly IGitHubClient _client;
     private readonly ILogger<GitHubDashboardProvider> _logger;
-    private readonly IOptionsMonitor<GitHubOptions> _options;
+    private readonly IOptionsMonitor<GitHubRepositoriesOptions> _repositoriesOptions;
     private readonly TimeProvider _timeProvider;
 
     public GitHubDashboardProvider(
         IGitHubClient client,
-        IOptionsMonitor<GitHubOptions> options,
+        IOptionsMonitor<GitHubRepositoriesOptions> repositoriesOptions,
         TimeProvider timeProvider,
         ILogger<GitHubDashboardProvider> logger)
     {
         _client = client;
-        _options = options;
+        _repositoriesOptions = repositoriesOptions;
         _timeProvider = timeProvider;
         _logger = logger;
     }
@@ -30,7 +30,7 @@ public sealed class GitHubDashboardProvider : IPipelineDashboardProvider
 
     public async Task<DashboardData> GetDashboardDataAsync(CancellationToken cancellationToken)
     {
-        var options = _options.CurrentValue;
+        var options = _repositoriesOptions.CurrentValue;
         var repositories = new List<DashboardRepository>();
         var pipelines = new List<DashboardPipeline>();
         var executions = new List<DashboardExecution>();

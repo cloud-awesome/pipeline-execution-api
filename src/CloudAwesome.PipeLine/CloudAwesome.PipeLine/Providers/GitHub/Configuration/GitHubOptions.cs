@@ -15,6 +15,4 @@ public sealed class GitHubOptions
     public int PageSize { get; set; } = 100;
 
     public int MaxRetryAttempts { get; set; } = 3;
-
-    public List<GitHubRepositoryOptions> Repositories { get; set; } = [];
 }

@@ -1,0 +1,43 @@
+{
+  "GitHubRepositories": {
+    "repositories": [
+      {
+        "owner": "cloud-awesome",
+        "name": "pipeline-execution-dashboard",
+        "displayName": "pipeline-execution-dashboard",
+        "pipelines": [
+          {
+            "name": "ci build",
+            "category": "build"
+          },
+          {
+            "name": "npm publish",
+            "category": "release"
+          }
+        ]
+      },
+      {
+        "owner": "cloud-awesome",
+        "name": "markdown-maker",
+        "displayName": "markdown-maker",
+        "pipelines": [
+          {
+            "name": "Build and Test",
+            "category": "build"
+          }
+        ]
+      },
+      {
+        "owner": "cloud-awesome",
+        "name": "cloudawesome-docs",
+        "displayName": "cloudawesome-docs",
+        "pipelines": [
+          {
+            "name": "Azure Static Web Apps CI/CD",
+            "category": "release"
+          }
+        ]
+      }
+    ]
+  }
+}

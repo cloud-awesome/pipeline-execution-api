@@ -12,7 +12,7 @@ public sealed class GitHubOptionsValidatorTests
     [Test]
     public void ValidConfigurationPasses()
     {
-        var result = _validator.Validate(Options.DefaultName, CreateValidOptions());
+        var result = _validator.Validate(Options.DefaultName, new GitHubOptions());
 
         Assert.That(result.Succeeded, Is.True);
     }
@@ -20,10 +20,10 @@ public sealed class GitHubOptionsValidatorTests
     [Test]
     public void CustomPipelineCategoryPasses()
     {
-        var options = CreateValidOptions();
+        var options = CreateValidRepositoryOptions();
         options.Repositories[0].Pipelines[0].Category = "security-scan";
 
-        var result = _validator.Validate(Options.DefaultName, options);
+        var result = new GitHubRepositoriesOptionsValidator().Validate(Options.DefaultName, options);
 
         Assert.That(result.Succeeded, Is.True);
     }
@@ -31,19 +31,19 @@ public sealed class GitHubOptionsValidatorTests
     [Test]
     public void MissingRepositoriesFailClearly()
     {
-        var result = _validator.Validate(Options.DefaultName, new GitHubOptions());
+        var result = new GitHubRepositoriesOptionsValidator().Validate(Options.DefaultName, new GitHubRepositoriesOptions());
 
         Assert.Multiple(() =>
         {
             Assert.That(result.Failed, Is.True);
-            Assert.That(result.Failures, Does.Contain("GitHub:Repositories must contain at least one repository."));
+            Assert.That(result.Failures, Does.Contain("GitHubRepositories:Repositories must contain at least one repository."));
         });
     }
 
     [Test]
     public void MissingRepositoryFieldsFailClearly()
     {
-        var options = new GitHubOptions
+        var options = new GitHubRepositoriesOptions
         {
             Repositories =
             [
@@ -51,20 +51,20 @@ public sealed class GitHubOptionsValidatorTests
             ]
         };
 
-        var result = _validator.Validate(Options.DefaultName, options);
+        var result = new GitHubRepositoriesOptionsValidator().Validate(Options.DefaultName, options);
 
         Assert.Multiple(() =>
         {
             Assert.That(result.Failed, Is.True);
-            Assert.That(result.Failures, Does.Contain("GitHub:Repositories:0:Owner is required."));
-            Assert.That(result.Failures, Does.Contain("GitHub:Repositories:0:Name is required."));
+            Assert.That(result.Failures, Does.Contain("GitHubRepositories:Repositories:0:Owner is required."));
+            Assert.That(result.Failures, Does.Contain("GitHubRepositories:Repositories:0:Name is required."));
         });
     }
 
     [Test]
     public void InvalidClientSettingsFailClearly()
     {
-        var options = CreateValidOptions();
+        var options = new GitHubOptions();
         options.ApiBaseUrl = "not-a-uri";
         options.ApiVersion = " ";
         options.PageSize = 101;
@@ -85,54 +85,54 @@ public sealed class GitHubOptionsValidatorTests
     [Test]
     public void MissingPipelineFieldsFailClearly()
     {
-        var options = CreateValidOptions();
+        var options = CreateValidRepositoryOptions();
         options.Repositories[0].Pipelines[0] = new GitHubPipelineOptions();
 
-        var result = _validator.Validate(Options.DefaultName, options);
+        var result = new GitHubRepositoriesOptionsValidator().Validate(Options.DefaultName, options);
 
         Assert.Multiple(() =>
         {
             Assert.That(result.Failed, Is.True);
-            Assert.That(result.Failures, Does.Contain("GitHub:Repositories:0:Pipelines:0:Name is required."));
-            Assert.That(result.Failures, Does.Contain("GitHub:Repositories:0:Pipelines:0:Category is required."));
+            Assert.That(result.Failures, Does.Contain("GitHubRepositories:Repositories:0:Pipelines:0:Name is required."));
+            Assert.That(result.Failures, Does.Contain("GitHubRepositories:Repositories:0:Pipelines:0:Category is required."));
         });
     }
 
     [Test]
     public void DuplicateRepositoriesFailClearly()
     {
-        var options = CreateValidOptions();
+        var options = CreateValidRepositoryOptions();
         options.Repositories.Add(new GitHubRepositoryOptions
         {
             Owner = "Cloud-Awesome",
             Name = "Pipeline-Execution-Dashboard"
         });
 
-        var result = _validator.Validate(Options.DefaultName, options);
+        var result = new GitHubRepositoriesOptionsValidator().Validate(Options.DefaultName, options);
 
         Assert.Multiple(() =>
         {
             Assert.That(result.Failed, Is.True);
-            Assert.That(GetFailures(result).Single(), Is.EqualTo("GitHub:Repositories:1 duplicates repository 'Cloud-Awesome/Pipeline-Execution-Dashboard'."));
+            Assert.That(GetFailures(result).Single(), Is.EqualTo("GitHubRepositories:Repositories:1 duplicates repository 'Cloud-Awesome/Pipeline-Execution-Dashboard'."));
         });
     }
 
     [Test]
     public void DuplicatePipelinesFailClearly()
     {
-        var options = CreateValidOptions();
+        var options = CreateValidRepositoryOptions();
         options.Repositories[0].Pipelines.Add(new GitHubPipelineOptions
         {
             Name = "build",
             Category = "release"
         });
 
-        var result = _validator.Validate(Options.DefaultName, options);
+        var result = new GitHubRepositoriesOptionsValidator().Validate(Options.DefaultName, options);
 
         Assert.Multiple(() =>
         {
             Assert.That(result.Failed, Is.True);
-            Assert.That(GetFailures(result).Single(), Is.EqualTo("GitHub:Repositories:0:Pipelines:1 duplicates pipeline 'build'."));
+            Assert.That(GetFailures(result).Single(), Is.EqualTo("GitHubRepositories:Repositories:0:Pipelines:1 duplicates pipeline 'build'."));
         });
     }
 
@@ -141,9 +141,9 @@ public sealed class GitHubOptionsValidatorTests
         return result.Failures ?? [];
     }
 
-    private static GitHubOptions CreateValidOptions()
+    private static GitHubRepositoriesOptions CreateValidRepositoryOptions()
     {
-        return new GitHubOptions
+        return new GitHubRepositoriesOptions
         {
             Repositories =
             [
