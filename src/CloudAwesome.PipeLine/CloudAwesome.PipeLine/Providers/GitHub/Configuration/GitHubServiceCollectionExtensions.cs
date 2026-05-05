@@ -20,8 +20,9 @@ public static class GitHubServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(environment);
 
+        var contentRootPath = ResolveContentRootPath(environment);
         var repositoriesConfiguration = new ConfigurationBuilder()
-            .SetBasePath(environment.ContentRootPath)
+            .SetBasePath(contentRootPath)
             .AddJsonFile(GitHubRepositoriesOptions.DefaultFileName, optional: true, reloadOnChange: false)
             .Build();
 
@@ -44,5 +45,40 @@ public static class GitHubServiceCollectionExtensions
         services.AddSingleton(TimeProvider.System);
 
         return services;
+    }
+
+    private static string ResolveContentRootPath(IHostEnvironment environment)
+    {
+        var candidatePaths = new[]
+        {
+            environment.ContentRootPath,
+            AppContext.BaseDirectory,
+            Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot"),
+            ResolveDefaultAzureWwwRootPath()
+        };
+
+        foreach (var candidatePath in candidatePaths)
+        {
+            if (string.IsNullOrWhiteSpace(candidatePath))
+            {
+                continue;
+            }
+
+            var repositoryConfigPath = Path.Combine(candidatePath, GitHubRepositoriesOptions.DefaultFileName);
+            if (File.Exists(repositoryConfigPath))
+            {
+                return candidatePath;
+            }
+        }
+
+        return environment.ContentRootPath;
+    }
+
+    private static string? ResolveDefaultAzureWwwRootPath()
+    {
+        var homePath = Environment.GetEnvironmentVariable("HOME");
+        return string.IsNullOrWhiteSpace(homePath)
+            ? null
+            : Path.Combine(homePath, "site", "wwwroot");
     }
 }

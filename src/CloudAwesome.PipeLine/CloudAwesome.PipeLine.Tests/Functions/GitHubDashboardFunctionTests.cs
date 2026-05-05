@@ -41,12 +41,16 @@ public sealed class GitHubDashboardFunctionTests
     [Test]
     public async Task ReturnsSafeConfigurationError()
     {
-        var exception = new OptionsValidationException("GitHub", typeof(object), ["bad secret-like config"]);
+        var exception = new OptionsValidationException("GitHubRepositories", typeof(object), ["GitHubRepositories:Repositories must contain at least one repository."]);
         var function = CreateFunction(new StubProvider(exception));
 
         var result = await function.Run(CreateRequest(), CancellationToken.None);
 
         AssertError(result, StatusCodes.Status500InternalServerError, "configuration_invalid", "GitHub dashboard configuration is invalid.");
+
+        var objectResult = result as ObjectResult;
+        var error = objectResult?.Value as ErrorResponse;
+        Assert.That(error?.Details, Does.Contain("GitHubRepositories:Repositories must contain at least one repository."));
     }
 
     [Test]

@@ -10,6 +10,9 @@ public sealed record ErrorResponse
     [JsonPropertyName("message")]
     public required string Message { get; init; }
 
+    [JsonPropertyName("details")]
+    public IReadOnlyList<string> Details { get; init; } = [];
+
     [JsonPropertyName("retryAfter")]
     public DateTimeOffset? RetryAfter { get; init; }
 }

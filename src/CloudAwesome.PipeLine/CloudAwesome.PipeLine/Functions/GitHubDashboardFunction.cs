@@ -41,7 +41,8 @@ public sealed class GitHubDashboardFunction
             return new ObjectResult(new ErrorResponse
             {
                 Error = "configuration_invalid",
-                Message = "GitHub dashboard configuration is invalid."
+                Message = "GitHub dashboard configuration is invalid.",
+                Details = exception.Failures.Select(SanitizeConfigurationFailure).ToArray()
             })
             {
                 StatusCode = StatusCodes.Status500InternalServerError
@@ -72,5 +73,12 @@ public sealed class GitHubDashboardFunction
                 StatusCode = StatusCodes.Status502BadGateway
             };
         }
+    }
+
+    private static string SanitizeConfigurationFailure(string failure)
+    {
+        return failure.Contains("Token", StringComparison.OrdinalIgnoreCase)
+            ? "GitHub token configuration is invalid."
+            : failure;
     }
 }
