@@ -1,4 +1,6 @@
+using CloudAwesome.PipeLine.Providers;
 using CloudAwesome.PipeLine.Providers.GitHub.Client;
+using CloudAwesome.PipeLine.Providers.GitHub;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,6 +25,8 @@ public static class GitHubServiceCollectionExtensions
                 new HttpClient(),
                 serviceProvider.GetRequiredService<IOptionsMonitor<GitHubOptions>>(),
                 serviceProvider.GetRequiredService<ILogger<GitHubClient>>()));
+        services.AddSingleton<IPipelineDashboardProvider, GitHubDashboardProvider>();
+        services.AddSingleton(TimeProvider.System);
 
         return services;
     }

@@ -12,5 +12,9 @@
     "GitHub__Repositories__0__DisplayName": "Pipeline Execution Dashboard",
     "GitHub__Repositories__0__Pipelines__0__Name": "Build",
     "GitHub__Repositories__0__Pipelines__0__Category": "build"
+  },
+  "Host": {
+    "CORS": "http://localhost:3000,http://localhost:5173,http://localhost:7108",
+    "CORSCredentials": false
   }
 }

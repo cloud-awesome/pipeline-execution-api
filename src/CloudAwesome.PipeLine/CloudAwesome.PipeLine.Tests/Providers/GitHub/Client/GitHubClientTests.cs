@@ -187,7 +187,7 @@ public sealed class GitHubClientTests
     {
         return new GitHubClient(
             new HttpClient(handler),
-            new OptionsMonitorStub<GitHubOptions>(options ?? new GitHubOptions()),
+            new TestOptionsMonitor<GitHubOptions>(options ?? new GitHubOptions()),
             NullLogger<GitHubClient>.Instance);
     }
 
@@ -230,18 +230,4 @@ public sealed class GitHubClientTests
         }
     }
 
-    private sealed class OptionsMonitorStub<TOptions>(TOptions currentValue) : IOptionsMonitor<TOptions>
-    {
-        public TOptions CurrentValue { get; } = currentValue;
-
-        public TOptions Get(string? name)
-        {
-            return CurrentValue;
-        }
-
-        public IDisposable? OnChange(Action<TOptions, string?> listener)
-        {
-            return null;
-        }
-    }
 }
