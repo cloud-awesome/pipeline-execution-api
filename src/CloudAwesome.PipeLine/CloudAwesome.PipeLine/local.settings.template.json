@@ -3,6 +3,10 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "GitHub__ApiBaseUrl": "https://api.github.com/",
+    "GitHub__ApiVersion": "2026-03-10",
+    "GitHub__PageSize": "100",
+    "GitHub__MaxRetryAttempts": "3",
     "GitHub__Repositories__0__Owner": "cloud-awesome",
     "GitHub__Repositories__0__Name": "pipeline-execution-dashboard",
     "GitHub__Repositories__0__DisplayName": "Pipeline Execution Dashboard",
