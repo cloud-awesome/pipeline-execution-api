@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudAwesome.PipeLine", "CloudAwesome.PipeLine\CloudAwesome.PipeLine.csproj", "{736FFB62-E0BA-47BF-BF0D-112432452045}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudAwesome.PipeLine.Tests", "CloudAwesome.PipeLine.Tests\CloudAwesome.PipeLine.Tests.csproj", "{A6A023AC-4C20-4B7B-A2D2-710D8056B5CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{736FFB62-E0BA-47BF-BF0D-112432452045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736FFB62-E0BA-47BF-BF0D-112432452045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736FFB62-E0BA-47BF-BF0D-112432452045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736FFB62-E0BA-47BF-BF0D-112432452045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6A023AC-4C20-4B7B-A2D2-710D8056B5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6A023AC-4C20-4B7B-A2D2-710D8056B5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6A023AC-4C20-4B7B-A2D2-710D8056B5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6A023AC-4C20-4B7B-A2D2-710D8056B5CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "GitHub__Repositories__0__Owner": "cloud-awesome",
+    "GitHub__Repositories__0__Name": "pipeline-execution-dashboard",
+    "GitHub__Repositories__0__DisplayName": "Pipeline Execution Dashboard",
+    "GitHub__Repositories__0__Pipelines__0__Name": "Build",
+    "GitHub__Repositories__0__Pipelines__0__Category": "build"
+  }
+}

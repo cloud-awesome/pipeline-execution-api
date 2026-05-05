@@ -1,0 +1,19 @@
+{
+  "repositories": [
+    {
+      "owner": "cloud-awesome",
+      "name": "pipeline-execution-dashboard",
+      "displayName": "Pipeline Execution Dashboard",
+      "pipelines": [
+        {
+          "name": "Build",
+          "category": "build"
+        },
+        {
+          "name": "Publish",
+          "category": "release"
+        }
+      ]
+    }
+  ]
+}
