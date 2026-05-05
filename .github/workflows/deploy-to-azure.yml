@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Deploy to Azure Functions
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'src/CloudAwesome.PipeLine/CloudAwesome.PipeLine'
+  AZURE_FUNCTIONAPP_PUBLISH_PATH: '${{ github.workspace }}/function-package'
+  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Publish Function App'
+        shell: bash
+        run: dotnet publish '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}' --configuration Release --output '${{ env.AZURE_FUNCTIONAPP_PUBLISH_PATH }}'
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B69E1D3E607A405EAE3DF1F893C81A08 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1E5C99E467D74BD3A0A0F3CA9106E976 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B4D1245D5ACB4F66B222CA84B66D0461 }}
+
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'cloudawesome-docs-api'
+          slot-name: 'Production'
+          package: '${{ env.AZURE_FUNCTIONAPP_PUBLISH_PATH }}'
+          

@@ -1,0 +1,56 @@
+name: ci build
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  SOLUTION_PATH: 'src/CloudAwesome.PipeLine/CloudAwesome.PipeLine.sln'
+  FUNCTION_PROJECT_PATH: 'src/CloudAwesome.PipeLine/CloudAwesome.PipeLine/CloudAwesome.PipeLine.csproj'
+  PUBLISH_OUTPUT_PATH: '${{ github.workspace }}/artifacts/function'
+
+jobs:
+  validate:
+    name: Build, test, and package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore "${{ env.SOLUTION_PATH }}"
+
+      - name: Build
+        run: dotnet build "${{ env.SOLUTION_PATH }}" --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test "${{ env.SOLUTION_PATH }}" --configuration Release --no-build --no-restore --logger trx --results-directory TestResults
+
+      - name: Publish function artifact
+        run: dotnet publish "${{ env.FUNCTION_PROJECT_PATH }}" --configuration Release --no-build --output "${{ env.PUBLISH_OUTPUT_PATH }}"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: TestResults
+
+      - name: Upload function artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: function-app
+          path: ${{ env.PUBLISH_OUTPUT_PATH }}
