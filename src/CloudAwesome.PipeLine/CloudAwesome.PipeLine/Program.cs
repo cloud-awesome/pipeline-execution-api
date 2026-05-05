@@ -9,7 +9,7 @@ var host = new HostBuilder()
 	{
 		services.AddApplicationInsightsTelemetryWorkerService();
 		services.ConfigureFunctionsApplicationInsights();
-		services.AddGitHubConfiguration(context.Configuration);
+		services.AddGitHubConfiguration(context.Configuration, context.HostingEnvironment);
 	})
 	.Build();
 

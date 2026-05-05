@@ -152,14 +152,14 @@ public sealed class GitHubDashboardProviderTests
     {
         return new GitHubDashboardProvider(
             client,
-            new TestOptionsMonitor<GitHubOptions>(CreateOptions()),
+            new TestOptionsMonitor<GitHubRepositoriesOptions>(CreateRepositoryOptions()),
             new ManualTimeProvider(DateTimeOffset.Parse("2026-05-05T12:30:00Z")),
             NullLogger<GitHubDashboardProvider>.Instance);
     }
 
-    private static GitHubOptions CreateOptions()
+    private static GitHubRepositoriesOptions CreateRepositoryOptions()
     {
-        return new GitHubOptions
+        return new GitHubRepositoriesOptions
         {
             Repositories =
             [

@@ -13,16 +13,43 @@ public sealed class GitHubOptionsBindingTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["GitHub:Repositories:0:Owner"] = "cloud-awesome",
-                ["GitHub:Repositories:0:Name"] = "pipeline-execution-dashboard",
-                ["GitHub:Repositories:0:DisplayName"] = "Pipeline Execution Dashboard",
-                ["GitHub:Repositories:0:Pipelines:0:Name"] = "Build",
-                ["GitHub:Repositories:0:Pipelines:0:Category"] = "build"
+                ["GitHub:ApiBaseUrl"] = "https://api.github.example/",
+                ["GitHub:ApiVersion"] = "2026-03-10",
+                ["GitHub:PageSize"] = "50",
+                ["GitHub:MaxRetryAttempts"] = "2",
+                ["GitHub:Token"] = "test-token"
             })
             .Build();
 
         var options = new GitHubOptions();
         configuration.GetSection(GitHubOptions.SectionName).Bind(options);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(options.ApiBaseUrl, Is.EqualTo("https://api.github.example/"));
+            Assert.That(options.ApiVersion, Is.EqualTo("2026-03-10"));
+            Assert.That(options.PageSize, Is.EqualTo(50));
+            Assert.That(options.MaxRetryAttempts, Is.EqualTo(2));
+            Assert.That(options.Token, Is.EqualTo("test-token"));
+        });
+    }
+
+    [Test]
+    public void RepositoryOptionsBindFromBundledJsonShape()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["GitHubRepositories:Repositories:0:Owner"] = "cloud-awesome",
+                ["GitHubRepositories:Repositories:0:Name"] = "pipeline-execution-dashboard",
+                ["GitHubRepositories:Repositories:0:DisplayName"] = "Pipeline Execution Dashboard",
+                ["GitHubRepositories:Repositories:0:Pipelines:0:Name"] = "Build",
+                ["GitHubRepositories:Repositories:0:Pipelines:0:Category"] = "build"
+            })
+            .Build();
+
+        var options = new GitHubRepositoriesOptions();
+        configuration.GetSection(GitHubRepositoriesOptions.SectionName).Bind(options);
 
         Assert.Multiple(() =>
         {

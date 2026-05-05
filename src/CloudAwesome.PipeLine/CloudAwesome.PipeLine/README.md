@@ -21,7 +21,7 @@ The project uses the Azure Functions isolated worker model on Functions runtime 
 ## Local Setup
 
 1. Copy `local.settings.template.json` to `local.settings.json`.
-2. Adjust the sample GitHub repository values if required.
+2. Adjust `github.repositories.json` to include the public repositories and pipelines to query.
 3. Keep `local.settings.json` out of source control.
 4. Run the Function app from Rider/JetBrains using the configured local host command:
 
@@ -33,11 +33,11 @@ The default Rider launch profile runs the app on port `7108`.
 
 ## Configuration Shape
 
-The MVP configuration is GitHub-specific and should remain isolated from the dashboard contract. Repository and pipeline configuration will be loaded from application settings so it works locally and in Azure.
+The MVP configuration is GitHub-specific and should remain isolated from the dashboard contract. Operational settings are loaded from application settings so they can vary by environment. Repository and pipeline mappings are loaded from the bundled `github.repositories.json` file.
 
-`GitHub:Repositories` must contain at least one repository. Each repository requires `Owner` and `Name`. Pipeline mappings are optional, but when provided each mapping requires `Name` and `Category`. Categories are not restricted to the default dashboard categories, so consumers can introduce custom category names later without changing the API.
+`github.repositories.json` must contain at least one repository under `GitHubRepositories:Repositories`. Each repository requires `owner` and `name`. Pipeline mappings are optional, but when provided each mapping requires `name` and `category`. Categories are not restricted to the default dashboard categories, so consumers can introduce custom category names later without changing the API.
 
-The template uses environment-style keys such as:
+Environment-specific application settings use keys such as:
 
 ```text
 GitHub__ApiBaseUrl
@@ -45,15 +45,11 @@ GitHub__ApiVersion
 GitHub__Token
 GitHub__PageSize
 GitHub__MaxRetryAttempts
-GitHub__Repositories__0__Owner
-GitHub__Repositories__0__Name
-GitHub__Repositories__0__Pipelines__0__Name
-GitHub__Repositories__0__Pipelines__0__Category
 ```
 
 `GitHub__Token` is optional for public repositories, but can be supplied as an app setting for higher rate limits or later private repository support. Do not commit real tokens to `local.settings.json`.
 
-A JSON example is available at `samples/github.repositories.sample.json`.
+The repository mapping file is copied to the Function publish output and deployed with the app.
 
 Configured pipeline mappings are matched to GitHub workflow names case-insensitively. Workflows without a configured mapping are included with category `other`. Disabled workflows are excluded.
 
