@@ -18,11 +18,26 @@
       },
       {
         "owner": "cloud-awesome",
+        "name": "pipeline-execution-api",
+        "displayName": "pipeline-execution-api",
+        "pipelines": [
+          {
+            "name": "ci build",
+            "category": "build"
+          },
+          {
+            "name": "cd",
+            "category": "release"
+          }
+        ]
+      },
+      {
+        "owner": "cloud-awesome",
         "name": "markdown-maker",
         "displayName": "markdown-maker",
         "pipelines": [
           {
-            "name": "Build and Test",
+            "name": "ci",
             "category": "build"
           }
         ]
@@ -33,7 +48,7 @@
         "displayName": "cloudawesome-docs",
         "pipelines": [
           {
-            "name": "Azure Static Web Apps CI/CD",
+            "name": "cd",
             "category": "release"
           }
         ]
