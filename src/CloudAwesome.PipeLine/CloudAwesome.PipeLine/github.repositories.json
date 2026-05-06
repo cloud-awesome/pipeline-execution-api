@@ -37,6 +37,17 @@
             "category": "release"
           }
         ]
+      },
+      {
+        "owner": "apng1982",
+        "name": "obsidian-folk-tune-review",
+        "displayName": "obsidian-folk-tune-review",
+        "pipelines": [
+          {
+            "name": "Publish CLI to NuGet",
+            "category": "other"
+          }
+        ]
       }
     ]
   }
