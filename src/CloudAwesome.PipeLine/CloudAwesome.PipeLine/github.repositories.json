@@ -41,7 +41,7 @@
             "category": "build"
           },
           {
-            "name": "deploy-to-buget",
+            "name": "deploy-to-nuget",
             "category": "release"
           }
         ]
@@ -53,6 +53,17 @@
         "pipelines": [
           {
             "name": "cd",
+            "category": "release"
+          }
+        ]
+      },
+      {
+        "owner": "cloud-awesome",
+        "name": "gds-wireframe-stencils",
+        "displayName": "gds-wireframe-stencils",
+        "pipelines": [
+          {
+            "name": "release",
             "category": "release"
           }
         ]
