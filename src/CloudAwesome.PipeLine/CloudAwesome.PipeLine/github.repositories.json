@@ -33,6 +33,16 @@
       },
       {
         "owner": "cloud-awesome",
+        "name": "dataverse-simulate",
+        "displayName": "dataverse-simulate",
+        "pipelines": [
+          {
+            "name": "ci build",
+            "category": "build"
+          }        ]
+      },
+      {
+        "owner": "cloud-awesome",
         "name": "markdown-maker",
         "displayName": "markdown-maker",
         "pipelines": [
